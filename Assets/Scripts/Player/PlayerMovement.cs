@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.IsGameOver) return;
+
         _movement = Input.GetAxisRaw("Horizontal") * runSpeed;
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -25,6 +27,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!GameManager.IsGamePlaying && _movement != 0)
+        {
+            GameManager.IsGamePlaying = true;
+        }
         playerController.Move(_movement * Time.fixedDeltaTime, false, _jump);
         _jump = false;
     }

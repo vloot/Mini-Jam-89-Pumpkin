@@ -1,8 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] private GameObject[] platforms;
+    [SerializeField] private Platform[] platforms;
+    private List<Platform> spawnedPlatforms;
+    public List<Platform> GetPlatforms => spawnedPlatforms;
+
     [SerializeField] private GameObject playerGameObject;
     [SerializeField] private Transform startPoint;
     [SerializeField] private Transform generationParent;
@@ -11,8 +15,9 @@ public class LevelGenerator : MonoBehaviour
     public int numOfPlatforms = 10;
     public float positionsOffset = 5;
 
-    private void Start()
+    private void Awake()
     {
+        spawnedPlatforms = new List<Platform>();
         float offsetY = 0;
 
         for (int i = 0; i < numOfPlatforms; i++)
@@ -23,6 +28,8 @@ public class LevelGenerator : MonoBehaviour
             var platform = Instantiate(platformToSpawn, pos, Quaternion.identity, generationParent);
             platform.gameObject.name = i.ToString();
             offsetY += positionsOffset;
+
+            spawnedPlatforms.Add(platform);
         }
     }
 }
